@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Admin Panel</h1>
+
+    {% if current_user.is_admin %}
+        <h3>All Users</h3>
+        <ul>
+            {% for user in users %}
+                <li>
+                    <strong>{{ user.username }}</strong> ({{ user.email }})
+                    <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h3>User Post Summary</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Number of Posts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for username, post_count in user_post_counts.items() %}
+                    <tr>
+                        <td>{{ username }}</td>
+                        <td>{{ post_count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>You must be an admin to view this page.</p>
+    {% endif %}
+{% endblock %}
